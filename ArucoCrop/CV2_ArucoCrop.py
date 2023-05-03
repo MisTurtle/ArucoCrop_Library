@@ -135,12 +135,15 @@ def unregister_ArucoArea(_area: Union[ArucoArea, str]):
 
 
 def process_frame(_frame: np.ndarray) -> list:
-	cv2.imshow("frame",_frame)
-	global _debug, arucoDict, arucoAreas, arucoParams
+	global _debug, _debugPrefix, arucoDict, arucoAreas, arucoParams
 	_processed = []
 	(_corners, _ids, _rejected) = cv2.aruco.detectMarkers(_frame, arucoDict, parameters=arucoParams)
 	if _ids is None:
+		if _debug:
+			debug("No marker was detected", _debugPrefix)
 		return _processed
+	else:
+		debug("Detected markers: {}".format(" ; ".join(_ids)), _debugPrefix)
 	area: ArucoArea
 	for area in arucoAreas.values():
 		if not area.is_visible(_ids):
