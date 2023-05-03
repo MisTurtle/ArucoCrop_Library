@@ -143,7 +143,7 @@ def process_frame(_frame: np.ndarray) -> list:
 			debug("No marker was detected", _debugPrefix)
 		return _processed
 	else:
-		debug("Detected markers: {}".format(" ; ".join(_ids)), _debugPrefix)
+		debug("Detected markers: {}".format(" ; ".join(list(map(lambda x: str(x[0]), _ids.tolist())))), _debugPrefix)
 	area: ArucoArea
 	for area in arucoAreas.values():
 		if not area.is_visible(_ids):
@@ -151,10 +151,7 @@ def process_frame(_frame: np.ndarray) -> list:
 				debug("Area `{}` is invisible".format(area.get_name()), _debugPrefix)
 			continue
 		rel_corners = area.filter(_ids, _corners)
-		result = area.process(_frame, rel_corners)
 		_processed.append(area.get_aruco_id())
 		if _debug:
 			debug("Successfully Processed Area `{}`".format(area.get_name()), _debugPrefix)
-			#cv2.imshow(area.get_name(), result)
-			cv2.waitKey(0)
 	return _processed
