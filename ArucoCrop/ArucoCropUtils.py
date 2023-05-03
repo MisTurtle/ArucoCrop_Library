@@ -12,8 +12,8 @@ def throw_error(err: str, **kwargs):
 			input('Press enter to continue...')
 
 
-def debug(what: str):
-	print('> ArucoCrop Debug : {}'.format(what))
+def debug(what: str, prefix: str = "> ArucoCrop Debug : "):
+	print('{} {}'.format(prefix, what))
 
 
 def rotate_img(img, points):
