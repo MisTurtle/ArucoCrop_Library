@@ -151,6 +151,7 @@ def process_frame(_frame: np.ndarray) -> list:
 				debug("Area `{}` is invisible".format(area.get_name()), _debugPrefix)
 			continue
 		rel_corners = area.filter(_ids, _corners)
+		area.process(_frame, rel_corners)
 		_processed.append(area.get_aruco_id())
 		if _debug:
 			debug("Successfully Processed Area `{}`".format(area.get_name()), _debugPrefix)
