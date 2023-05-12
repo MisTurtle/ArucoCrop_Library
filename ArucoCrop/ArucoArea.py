@@ -13,7 +13,7 @@ class ArucoArea(ABC):
 	@staticmethod
 	def rotate_and_crop(image, rel_corners):
 		center_points = get_center_points(rel_corners)
-		straight = rotate_img(image, center_points)
+		width, height, rot, straight = rotate_img(image, center_points)
 		top_left_corner_ids = []
 		for corners in rel_corners:
 			corners = corners.reshape(-1, 2).astype(np.int0)
@@ -26,16 +26,16 @@ class ArucoArea(ABC):
 			top_left_corner_ids.append(topLeftId)
 		counter = Counter(top_left_corner_ids)
 		common = counter.most_common(1)[0]
-		match common:
+		match common[0]:
 			case 0:  # Top left for most markers is already their top left
-				return straight
+				return width, height, rot, straight
 			case 1:  # Top left is mostly top right
-				angle = cv2.ROTATE_90_COUNTERCLOCKWISE
+				angle = cv2.ROTATE_90_CLOCKWISE
 			case 2:  # Top left is mostly bottom right
 				angle = cv2.ROTATE_180
 			case _:
-				angle = cv2.ROTATE_90_CLOCKWISE
-		return cv2.rotate(straight, angle)
+				angle = cv2.ROTATE_90_COUNTERCLOCKWISE
+		return width, height, rot, cv2.rotate(straight, angle)
 
 	def __init__(self, name: str, aruco_id: int, marker_count: int):
 		self.name = name
