@@ -43,4 +43,5 @@ def get_center_points(corners):
 	for marker_corners in corners:
 		(cX, cY), (_, _), _ = cv2.minAreaRect(marker_corners[0])
 		center_points.append([cX, cY])
+
 	return np.array(center_points, dtype=np.float32)
