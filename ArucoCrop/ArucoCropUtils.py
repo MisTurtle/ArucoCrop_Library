@@ -40,12 +40,14 @@ def rotate_img(img, points):
 
 def get_center_points(corners) -> np.ndarray:
 	center_points, lengths = [], []
-	for cid, markerCorners in enumerate(corners):
-		(tL, _, bR, _) = markerCorners.reshape((4, 2))
-		tL = int(tL[0]), int(tL[1])
-		bR = int(bR[0]), int(bR[1])
-		x = (bR[0] + tL[0]) / 2
-		y = (bR[1] + tL[1]) / 2
-		center_points.append([[x, y]])
+	for markerCorners in enumerate(corners):
+		(cX, cY), (_, _), _ = cv2.minAreaRect(markerCorners)
+		center_points.append([[cX, cY]])
+		# (tL, _, bR, _) = markerCorners.reshape((4, 2))
+		# tL = int(tL[0]), int(tL[1])
+		# bR = int(bR[0]), int(bR[1])
+		# x = (bR[0] + tL[0]) / 2
+		# y = (bR[1] + tL[1]) / 2
+		# center_points.append([[x, y]])
 
 	return np.array(center_points, dtype="float32")
