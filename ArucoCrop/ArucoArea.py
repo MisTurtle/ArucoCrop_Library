@@ -11,9 +11,16 @@ from ArucoCrop.ArucoCropUtils import rotate_img, get_center_points
 class ArucoArea(ABC):
 
 	@staticmethod
-	def rotate_and_crop(image, rel_corners):
+	def rotate_and_crop(image, rel_corners, width_max = True):
+		"""
+		Rotate an image and crop around the corners
+		:param image: The image to be cropped
+		:param rel_corners: Corners returned by cv2.detectMarkers
+		:param width_max: Should the max metric be considered as the height or the width of the area
+		:return:
+		"""
 		center_points = get_center_points(rel_corners)
-		width, height, rot, straight = rotate_img(image, center_points)
+		width, height, rot, straight = rotate_img(image, center_points, width_max)
 		top_left_corner_ids = []
 		for corners in rel_corners:
 			corners = corners.reshape(-1, 2).astype(np.int0)

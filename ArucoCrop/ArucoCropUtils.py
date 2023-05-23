@@ -18,14 +18,20 @@ def debug(what: str, prefix: str = "> ArucoCrop Debug : "):
 	print('{} {}'.format(prefix, what))
 
 
-def rotate_img(img, points):
+def rotate_img(img, points, width_max: bool = True):
 	"""
 	:param img: Image to rotate
 	:param points: Points to turn into a straight rectangle
+	:param width_max: Is the width of the area supposed to be the higher or lower value between height and width
 	:return: Img Width, Img Height, Read Angle, Rotated Image
 	"""
 	rect = cv2.minAreaRect(points)
 	width, height = int(rect[1][0]), int(rect[1][1])
+
+	if width_max:
+		width, height = max(width, height), min(width, height)
+	else:
+		width, height = min(width, height), max(width, height)
 
 	# top left, top right, bottom right, bottom left
 	src_pts = points.astype("float32")
